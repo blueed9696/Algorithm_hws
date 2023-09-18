@@ -41,12 +41,15 @@ Node* LinkedList::generateNode(){
     cin >> length;
     Node *head = NULL, *tail = NULL;
 
+    int rand_num_arr[length];
+
     // Generate first element
     if(head == NULL){
         Node* newNode = new Node;
         // Generate random  numbers
         // Offset = 5, Range = 100
-        int rand_num = 5 + (rand() % 100);
+        int rand_num = 5 + (rand() % 1000);
+        rand_num_arr[0] = rand_num;
 
         newNode->data = rand_num;
         head = newNode;
@@ -57,6 +60,17 @@ Node* LinkedList::generateNode(){
     for(int i = 0; i < length - 1; i++){
         Node* newNode = new Node;
         int rand_num = 5 + (rand() % 100);
+
+        // Avoid rand number redundancy
+        rand_num_arr[i+1] = rand_num;
+        for(int j = 0; j < length; j++){
+            if(i + 1 != j){
+                if(rand_num_arr[j] == rand_num){
+                    rand_num = rand_num + 1;
+                }
+            }
+        }
+
         // Insert it to linked list
         newNode->data = rand_num;
         tail->nextNode = newNode;

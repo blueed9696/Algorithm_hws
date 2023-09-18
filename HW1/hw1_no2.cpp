@@ -82,13 +82,28 @@ class Tree{
             int key_not_found = 0;
 
             // Define dividing index
+            if(left < 0){
+                left = 0;
+            }
+            if(right < 0){
+                right = 0;
+            }
+
             int mid1 = left + (right - left)/3;
             int mid2 = right - (right - left)/3;
-            
-            // set boundary to mid2 not cross over mid1
-            if(mid1 > mid2){
-                return key_not_found = -1;
+
+            if(mid1 > length){
+                mid1 = length;
             }
+            if(mid2 > length){
+                mid2 = length;
+            }
+
+            // Return last node if all dividers reaches last node
+            if(mid1 == length && mid2 == length){
+                return mid1-1;
+            }
+
             // Return mid index if mid1 or mid2 contains key value
             if(element_arr[mid1] == key){
                 return mid1;
@@ -103,6 +118,11 @@ class Tree{
                 return search(mid2 + 1, right, element_arr, key);
             }else{
                 return search(mid1 - 1, mid2 + 1, element_arr, key);
+            }
+
+            // set boundary to mid2 not cross over mid1
+            if(mid1 > mid2){
+                return key_not_found = -1;
             }
             
             // Return if key is not found
@@ -124,9 +144,21 @@ int main(){
         cout << "Warning : put positive integers";
     }
 
+    int rand_num_arr[length];
+
     // Generate random numbers to tree
     for(int i = 0; i < length; i++){
-        int rand_num = rand()%100;
+        int rand_num = i + rand()%1000; // randomly generate number
+        rand_num_arr[i] = rand_num;
+
+        // Add 1 if random number redundancy found.
+        for(int j = 0; j < length; j++){
+            if(i != j){
+                if(rand_num_arr[j] == rand_num){
+                    rand_num = rand_num + 1; // If it's in array, +1
+                }
+            }
+        }
         tree.insert(rand_num);
     }
 
